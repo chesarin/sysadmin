@@ -20,9 +20,9 @@ ssh_creation()
 {
     host=$1
     dest_user=$2
-    # echo "$host $dest_user"
+    echo "Creating SSH keys on $host as user $dest_user"
     options='-oStrictHostKeyChecking=false -oUserKnownHostsFile=/dev/null'
-    ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} "sudo -u ${dest_user} whoami "  
+    ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} "sudo -u ${dest_user} 'whoami&&hostname' "  
 }
 ssh_manager()
 {
