@@ -20,7 +20,7 @@ ssh_creation()
 {
     host=$1
     dest_user=$2
-    ssh -i ${HOME}/identities/${client}.pem ${user}@${host} "sudo ${dest_user} -c "whoami" "  
+    ssh -i ${HOME}/.ssh/identities/${client}.pem ${user}@${host} "sudo ${dest_user} -c "whoami" "  
 }
 ssh_manager()
 {
