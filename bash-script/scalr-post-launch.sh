@@ -21,7 +21,8 @@ ssh_creation()
     host=$1
     dest_user=$2
     # echo "$host $dest_user"
-    ssh -i ${HOME}/.ssh/identities/${client}.pem ${user}@${host} "sudo ${dest_user} -c "whoami" "  
+    options='-oStrictHostKeyChecking=false -oUserKnownHostsFile=/dev/null'
+    ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem ${user}@${host} "sudo ${dest_user} -c "whoami" "  
 }
 ssh_manager()
 {
