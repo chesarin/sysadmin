@@ -22,11 +22,12 @@ ssh_creation()
     dest_user=$2
     echo "Creating SSH keys on $host as user $dest_user"
     options='-oStrictHostKeyChecking=false -oUserKnownHostsFile=/dev/null'
-    ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} "sudo -u ${dest_user} whoami && hostname "  
+    ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} "sudo -u ${dest_user} whoami && hostname"  
 }
 ssh_manager()
 {
-    for server in ${servers[@]};
+    fs_server=(fs_primary)
+    for server in ${servers[@]/$fs_server};
     do 
 	server="ext-${client}-${server}.${client}.${domain_name}"
 	ssh_creation ${server} app;
