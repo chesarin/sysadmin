@@ -26,10 +26,13 @@ ssh_creation()
 }
 ssh_manager()
 {
-    fs_server=(fs_primary)
-    for server in ${servers[@]/$fs_server};
+    # fs_server=(fs_primary)
+    # servers=("$servers[@]/$fs_server")
+    local servers=(icat front cart ws) 
+    for server in ${servers[@]};
     do 
 	server="ext-${client}-${server}.${client}.${domain_name}"
+	# echo $server
 	ssh_creation ${server} app;
     done
 }
