@@ -29,4 +29,5 @@ ssh_manager()
     do ssh_creation server app;
     done
 }
+ssh_manager
 
