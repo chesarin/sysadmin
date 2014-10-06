@@ -26,7 +26,7 @@ ssh_creation()
     # ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} "sudo -u ${dest_user} whoami && hostname"  
     # ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} "sudo -u ${dest_user} $command"  
     command='rm -f /home/$dest_user/.ssh/id_rsa /home/$dest_user/.ssh/id_rsa.pub /home/$dest_user/.ssh/known_hosts && ssh-keygen -t rsa'
-    ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} "sudo -u ${dest_user} -i ${command}"  
+    ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} "sudo su - ${dest_user} -c ${command}"  
 
 }
 ssh_manager()
