@@ -26,8 +26,6 @@ ssh_creation()
 }
 ssh_manager()
 {
-    # fs_server=(fs_primary)
-    # servers=("$servers[@]/$fs_server")
     local servers=(icat front cart ws) 
     for server in ${servers[@]};
     do 
