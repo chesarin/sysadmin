@@ -22,7 +22,12 @@ ssh_creation()
     dest_user=$2
     echo "Creating SSH keys on $host as user $dest_user"
     options='-oStrictHostKeyChecking=false -oUserKnownHostsFile=/dev/null'
-    ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} "sudo -u ${dest_user} whoami && hostname"  
+    command='whoami && hostname'
+    # ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} "sudo -u ${dest_user} whoami && hostname"  
+    ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} "sudo -u ${dest_user} $command"  
+    # command='rm -f .ssh/id_rsa .ssh/id_rsa.pub .ssh/known_hosts && ssh-keygen -t rsa'
+    # ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} "sudo -u ${dest_user} $command"  
+
 }
 ssh_manager()
 {
