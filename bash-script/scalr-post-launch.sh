@@ -20,13 +20,14 @@ ssh_creation()
 {
     host=$1
     dest_user=$2
-    ssh -i ${HOME}/.ssh/identities/${client}.pem ${user}@${host} "sudo ${dest_user} -c "whoami" "  
+    echo "$host $dest_user"
+    # ssh -i ${HOME}/.ssh/identities/${client}.pem ${user}@${host} "sudo ${dest_user} -c "whoami" "  
 }
 ssh_manager()
 {
     for server in ${servers[@]};
-    do echo 'ext-'$client'-'$server'.'$client'.'$domain_name;
-    # do ssh_creation server app;
+    # do echo 'ext-'$client'-'$server'.'$client'.'$domain_name;
+    do ssh_creation server app;
     done
 }
 ssh_manager
