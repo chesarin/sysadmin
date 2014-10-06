@@ -2,9 +2,9 @@
 user=$1
 client=$2
 domain_name=$3
+servers=(fs-primary icat front cart ws) 
 test () 
 {
- servers=(fs-primary icat front cart ws) 
  for server in ${servers[@]};
    do echo 'ext-'$client'-'$server'.'$client'.'$domain_name;
  done
@@ -16,4 +16,17 @@ membase_pass()
  pass=$(mkpasswd -l 16 -s 0)
  ssh $user@$fs_server 
 }
-test
+ssh_creation()
+{
+    host=$1
+    dest_user=$2
+    ssh -i ${HOME}/identities/${client}.pem ${user}@${host} "sudo ${dest_user} -c "whoami" "  
+}
+ssh_manager()
+{
+    for server in ${servers[@]};
+    # do echo 'ext-'$client'-'$server'.'$client'.'$domain_name;
+    do ssh_creation server app;
+    done
+}
+
