@@ -26,7 +26,7 @@ ssh_creation()
 ssh_manager()
 {
     for server in ${servers[@]};
-    # do echo 'ext-'$client'-'$server'.'$client'.'$domain_name;
+    server='ext-'$client'-'$server'.'$client'.'$domain_name;
     do ssh_creation ${server} app;
     done
 }
