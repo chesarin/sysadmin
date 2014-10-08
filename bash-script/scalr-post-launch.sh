@@ -12,7 +12,7 @@ test ()
 }
 membase_pass()
 {
- #create membase password and store it on fs-primary server
+#create membase password and store it on fs-primary server
     fs_server='ext-'$client'-'fs-primary'.'$client'.'$domain_name
     local membase_file='/root/scripts/membase-password'
     echo "Creating membase password and storing it on ${fs_server}"
@@ -22,6 +22,7 @@ membase_pass()
     local svn_up='svn up /root/scripts/java-cloud-scripts'
     local membase_init='/root/scripts/java-cloud-scripts/initialize-membase'
     ${ssh_command} -i ${HOME}/.ssh/identities/${client}java.pem ${user}@${fs_server} "echo ${pass} > ${membase_file} && ${svn_up} && ${membase_init}"  
+    echo 'membase setup completed'
 }
 ssh_creation()
 {
@@ -45,6 +46,17 @@ ssh_manager()
 	# echo $server
 	ssh_creation ${server} app;
     done
+}
+fix_szradm()
+{
+    #Fixing szradm to activate environment variables
+    #on Scarl
+    if [ ! -e '/usr/local/bin/szradm' ]; then
+	echo 'fixing szradm';
+	cd /usr/local/bin ;
+	ln -s /usr/bin/szradm .;
+	/usr/local/bin/regen-scalr;
+   fi
 }
 # ssh_manager
 membase_pass
