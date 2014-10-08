@@ -14,11 +14,12 @@ membase_pass()
 {
  #create membase password and store it on fs-primary server
     fs_server='ext-'$client'-'fs-primary'.'$client'.'$domain_name
+    local membase_file='/root/scripts/membase-password'
     echo "Creating membase password and storing it on ${fs_server}"
     # local fs_server=${1}
     pass=$(mkpasswd -l 16 -s 0)
     echo "The password for membase is ${pass}"
-    ${ssh_command} -i ${HOME}/.ssh/identities/${client}java.pem ${user}@${fs_server} "echo $pass"  
+    ${ssh_command} -i ${HOME}/.ssh/identities/${client}java.pem ${user}@${fs_server} "echo ${pass} ${membase_file}"  
 }
 ssh_creation()
 {
