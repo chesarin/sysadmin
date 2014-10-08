@@ -18,7 +18,7 @@ membase_pass()
     # local fs_server=${1}
     pass=$(mkpasswd -l 16 -s 0)
     echo "The password for membase is ${pass}"
-    ${ssh_command} ${user}@${fs_server} 'echo test'  
+    ${ssh_command} -i ${HOME}/.ssh/identities/${client}.pem ${user}@${fs_server} 'echo test'  
 }
 ssh_creation()
 {
