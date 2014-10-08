@@ -19,7 +19,9 @@ membase_pass()
     # local fs_server=${1}
     pass=$(mkpasswd -l 16 -s 0)
     echo "The password for membase is ${pass} and we are overwritting ${membase_file}"
-    ${ssh_command} -i ${HOME}/.ssh/identities/${client}java.pem ${user}@${fs_server} "echo ${pass} > ${membase_file}"  
+    local svn_up='svn up /root/scripts/java-cloud-scripts'
+    local membase_init='/root/scripts/java-cloud-scripts/initialize-membase'
+    ${ssh_command} -i ${HOME}/.ssh/identities/${client}java.pem ${user}@${fs_server} "echo ${pass} > ${membase_file} && ${svn_up} && ${membase_init}"  
 }
 ssh_creation()
 {
