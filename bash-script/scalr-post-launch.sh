@@ -3,6 +3,7 @@ user=$1
 client=$2
 domain_name=$3
 servers=(fs-primary icat front cart ws) 
+ssh_command='ssh -oStrictHostKeyChecking=false -oUserKnownHostsFile=/dev/null'
 test () 
 {
  for server in ${servers[@]};
@@ -12,9 +13,12 @@ test ()
 membase_pass()
 {
  #create membase password and store it on fs-primary server
- fs_server='ext-'$client'-'fs-primary'.'$client'.'$domain_name
- pass=$(mkpasswd -l 16 -s 0)
- ssh $user@$fs_server 
+    fs_server='ext-'$client'-'fs-primary'.'$client'.'$domain_name
+    echo "Creating membase password and storing it on ${fs_server}"
+    # local fs_server=${1}
+    pass=$(mkpasswd -l 16 -s 0)
+    echo "The password for membase is ${pass}"
+    ${ssh_command} ${user}@${fs_server} 'echo test'  
 }
 ssh_creation()
 {
@@ -39,5 +43,5 @@ ssh_manager()
 	ssh_creation ${server} app;
     done
 }
-ssh_manager
-
+# ssh_manager
+membase_pass
