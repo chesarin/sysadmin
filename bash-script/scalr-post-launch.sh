@@ -18,8 +18,8 @@ membase_pass()
     echo "Creating membase password and storing it on ${fs_server}"
     # local fs_server=${1}
     pass=$(mkpasswd -l 16 -s 0)
-    echo "The password for membase is ${pass}"
-    ${ssh_command} -i ${HOME}/.ssh/identities/${client}java.pem ${user}@${fs_server} "echo ${pass} ${membase_file}"  
+    echo "The password for membase is ${pass} and we are overwritting ${membase_file}"
+    ${ssh_command} -i ${HOME}/.ssh/identities/${client}java.pem ${user}@${fs_server} "echo ${pass} > ${membase_file}"  
 }
 ssh_creation()
 {
