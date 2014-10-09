@@ -41,7 +41,7 @@ test1()
 {
     host=$1
     dest_user=$2
-    local my_script=$(base64 ssh-setup.sh)
+    local my_script=$(base64 -w0 ssh-setup.sh)
     echo "Creating SSH keys on $host as user $dest_user"
     options='-oStrictHostKeyChecking=false -oUserKnownHostsFile=/dev/null'
     # command='whoami && hostname'
