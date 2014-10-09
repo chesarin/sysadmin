@@ -79,7 +79,7 @@ ssh_manager()
 	    # echo $server
 	    # test1 ${server} deployer
 	    # test1 ${server} postgres
-	    membase_pass ${user}
+	    membase_pass ${server}
 	fi
     done
 }
