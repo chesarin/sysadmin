@@ -14,16 +14,21 @@ test()
 membase_pass()
 {
 #create membase password and store it on fs-primary server
-    fs_server='ext-'$client'-'fs-primary'.'$client'.'$domain_name
+    # fs_server='ext-'$client'-'fs-primary'.'$client'.'$domain_name
+    local host=$1
     local membase_file='/root/scripts/membase-password'
-    echo "Creating membase password and storing it on ${fs_server}"
+    echo "Creating membase password"
     # local fs_server=${1}
     pass=$(mkpasswd -l 16 -s 0)
-    echo "The password for membase is ${pass} and we are overwritting ${membase_file}"
-    local svn_up='svn up /root/scripts/java-cloud-scripts'
-    local membase_init='/root/scripts/java-cloud-scripts/initialize-membase'
-    ${ssh_command} -i ${HOME}/.ssh/identities/${client}java.pem ${user}@${fs_server} "echo ${pass} > ${membase_file} && ${svn_up} && ${membase_init}"  
-    echo 'membase setup completed'
+    if [[ "${host}" =~ .*fs-primary.* ]];then
+	echo "${host} FS Host"
+    echo "Regular hosts"
+    fi
+    # echo "The password for membase is ${pass} and we are overwritting ${membase_file}"
+    # local svn_up='svn up /root/scripts/java-cloud-scripts'
+    # local membase_init='/root/scripts/java-cloud-scripts/initialize-membase'
+    # ${ssh_command} -i ${HOME}/.ssh/identities/${client}java.pem ${user}@${fs_server} "echo ${pass} > ${membase_file} && ${svn_up} && ${membase_init}"  
+    # echo 'membase setup completed'
 }
 ssh_creation()
 {
@@ -65,13 +70,15 @@ ssh_manager()
 	if [ ${server} !=  'fs-primary' ]; then
 	    server="ext-${client}-${server}.${client}.${domain_name}"
 	    # echo "doing $server work"
-	    test1 ${server} app;
-	    test1 ${server} ${user}
+	    # test1 ${server} app;
+	    # test1 ${server} ${user}
+	    membase_pass ${server}
 	else
 	    server="ext-${client}-${server}.${client}.${domain_name}"
 	    # echo $server
-	    test1 ${server} deployer
-	    test1 ${server} postgres
+	    # test1 ${server} deployer
+	    # test1 ${server} postgres
+	    membase_pass ${user}
 	fi
     done
 }
