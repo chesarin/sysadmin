@@ -37,6 +37,21 @@ ssh_creation()
     ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} 'sudo su - ${dest_user} -c ${command}'  
 
 }
+test1()
+{
+    host=$1
+    dest_user=$2
+    local my_script=$(base64 ssh-setup.sh)
+    echo "Creating SSH keys on $host as user $dest_user"
+    options='-oStrictHostKeyChecking=false -oUserKnownHostsFile=/dev/null'
+    # command='whoami && hostname'
+    # ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} "sudo -u ${dest_user} whoami && hostname"  
+    # ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} "sudo -u ${dest_user} $command"  
+    command='rm -i ${HOME}/.ssh/id_rsa ${HOME}/.ssh/id_rsa.pub ${HOME}/.ssh/known_hosts && ssh-keygen -t rsa'
+    # ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} 'sudo su - ${dest_user} -c ${command}'  
+    ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} 'echo ${my_script} | base64 -d | su - app -c bash'  
+    
+}
 ssh_manager()
 {
     local servers=(icat front cart ws) 
@@ -44,7 +59,8 @@ ssh_manager()
     do 
 	server="ext-${client}-${server}.${client}.${domain_name}"
 	# echo $server
-	ssh_creation ${server} app;
+	# ssh_creation ${server} app;
+	test1 ${server} app;
     done
 }
 fix_szradm()
@@ -58,5 +74,5 @@ fix_szradm()
 	/usr/local/bin/regen-scalr;
    fi
 }
-# ssh_manager
-membase_pass
+ssh_manager
+# membase_pass
