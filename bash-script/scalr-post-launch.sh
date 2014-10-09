@@ -30,12 +30,12 @@ membase_pass()
 	echo "The password for membase is ${pass} and we are overwritting ${membase_file} on ${host}"
 	local svn_up='svn up /root/scripts/java-cloud-scripts'
 	local membase_init='/root/scripts/java-cloud-scripts/initialize-membase'
-	${ssh_command} -i ${HOME}/.ssh/identities/${client}java.pem ${user}@${fs_server} "echo ${pass} > ${membase_file} && ${svn_up} && ${membase_init}"  
+	${ssh_command} -i ${HOME}/.ssh/identities/${client}java.pem ${user}@${host} "echo ${pass} > ${membase_file} && ${svn_up} && ${membase_init}"  
     else
 	echo "Configuring membase client ${host} with ${pass}"
 	local build_membase_config='/root/scripts/java-cloud-scripts/buildmembaseconfig'
 	local start_moxi='/etc/init.d/moxi-server restart'
-	${ssh_command} -i ${HOME}/.ssh/identities/${client}java.pem ${user}@${fs_server} "echo ${pass} > ${membase_file} && ${build_membase_config} && ${start_moxi}" 
+	${ssh_command} -i ${HOME}/.ssh/identities/${client}java.pem ${user}@${host} "echo ${pass} > ${membase_file} && ${build_membase_config} && ${start_moxi}" 
     fi
     echo 'Membase setup completed'
 }
