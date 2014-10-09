@@ -4,11 +4,12 @@ client=$2
 domain_name=$3
 servers=(fs-primary icat front cart ws) 
 ssh_command='ssh -oStrictHostKeyChecking=false -oUserKnownHostsFile=/dev/null'
-test () 
+test() 
 {
- for server in ${servers[@]};
-   do echo 'ext-'$client'-'$server'.'$client'.'$domain_name;
- done
+    for server in ${servers[@]};
+    do 
+	echo 'ext-'$client'-'$server'.'$client'.'$domain_name;
+    done
 }
 membase_pass()
 {
@@ -44,23 +45,34 @@ test1()
     local my_script=$(base64 -w0 ssh-setup.sh)
     echo "Creating SSH keys on $host as user $dest_user"
     options='-oStrictHostKeyChecking=false -oUserKnownHostsFile=/dev/null'
+    
     # command='whoami && hostname'
     # ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} "sudo -u ${dest_user} whoami && hostname"  
     # ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} "sudo -u ${dest_user} $command"  
-    command='rm -i ${HOME}/.ssh/id_rsa ${HOME}/.ssh/id_rsa.pub ${HOME}/.ssh/known_hosts && ssh-keygen -t rsa'
-    # ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} 'sudo su - ${dest_user} -c ${command}'  
-    ssh ${options} -i ${HOME}/.ssh/identities/${client}java.pem -t ${user}@${host} "echo ${my_script} | base64 -d | su - app -c bash"  
+    
+    # command='rm -i ${HOME}/.ssh/id_rsa ${HOME}/.ssh/id_rsa.pub ${HOME}/.ssh/known_hosts && ssh-keygen -t rsa'
+    
+# ssh ${options} -i ${HOME}/.ssh/identities/${client}.pem -t ${user}@${host} 'sudo su - ${dest_user} -c ${command}'  
+    
+    ssh ${options} -i ${HOME}/.ssh/identities/${client}java.pem -t ${user}@${host} "echo ${my_script} | base64 -d | su - ${dest_user} -c bash"  
     
 }
 ssh_manager()
 {
-    local servers=(icat front cart ws) 
+    local servers=(fs-primary icat front cart ws) 
     for server in ${servers[@]};
     do 
-	server="ext-${client}-${server}.${client}.${domain_name}"
-	# echo $server
-	# ssh_creation ${server} app;
-	test1 ${server} app;
+	if [ ${server} !=  'fs-primary' ]; then
+	    server="ext-${client}-${server}.${client}.${domain_name}"
+	    # echo "doing $server work"
+	    test1 ${server} app;
+	    test1 ${server} ${user}
+	else
+	    server="ext-${client}-${server}.${client}.${domain_name}"
+	    # echo $server
+	    test1 ${server} deployer
+	    test1 ${server} postgres
+	fi
     done
 }
 fix_szradm()
