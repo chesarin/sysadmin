@@ -27,17 +27,17 @@ membase_pass()
     if [[ "${host}" =~ .*fs-primary.* ]];then
 	echo "Creating membase server for ${host} with password ${pass}"
 	# echo "${host} FS Host"
-    # echo "The password for membase is ${pass} and we are overwritting ${membase_file} on ${host}"
-    # local svn_up='svn up /root/scripts/java-cloud-scripts'
-    # local membase_init='/root/scripts/java-cloud-scripts/initialize-membase'
-    # ${ssh_command} -i ${HOME}/.ssh/identities/${client}java.pem ${user}@${fs_server} "echo ${pass} > ${membase_file} && ${svn_up} && ${membase_init}"  
+	echo "The password for membase is ${pass} and we are overwritting ${membase_file} on ${host}"
+	local svn_up='svn up /root/scripts/java-cloud-scripts'
+	local membase_init='/root/scripts/java-cloud-scripts/initialize-membase'
+	${ssh_command} -i ${HOME}/.ssh/identities/${client}java.pem ${user}@${fs_server} "echo ${pass} > ${membase_file} && ${svn_up} && ${membase_init}"  
     else
 	echo "Configuring membase client ${host} with ${pass}"
-	# local build_membase_config='/root/scripts/java-cloud-scripts/buildmembaseconfig'
-	# local start_moxi='/etc/init.d/moxi-server restart'
-	# ${ssh_command} -i ${HOME}/.ssh/identities/${client}java.pem ${user}@${fs_server} "echo ${pass} > ${membase_file} && ${build_membase_config} && ${start_moxi}" 
+	local build_membase_config='/root/scripts/java-cloud-scripts/buildmembaseconfig'
+	local start_moxi='/etc/init.d/moxi-server restart'
+	${ssh_command} -i ${HOME}/.ssh/identities/${client}java.pem ${user}@${fs_server} "echo ${pass} > ${membase_file} && ${build_membase_config} && ${start_moxi}" 
     fi
-    echo 'membase setup completed'
+    echo 'Membase setup completed'
 }
 ssh_creation()
 {
