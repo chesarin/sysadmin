@@ -5,8 +5,8 @@ setup()
     # su - ${user}
     echo "Creating Keys for user $(whoami)"
     echo ${HOME}
-    # rm -f ${HOME}/.ssh/id_rsa ${HOME}/.ssh/id_rsa.pub ${HOME}/.ssh/known_hosts
-    # ssh-keygen -t rsa -f ${HOME}/.ssh/id_rsa -N ''
+    rm -f ${HOME}/.ssh/id_rsa ${HOME}/.ssh/id_rsa.pub ${HOME}/.ssh/known_hosts
+    ssh-keygen -t rsa -f ${HOME}/.ssh/id_rsa -N ''
 }
 
 setup
