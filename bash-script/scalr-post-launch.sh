@@ -17,12 +17,13 @@ membase_pass()
     # fs_server='ext-'$client'-'fs-primary'.'$client'.'$domain_name
     local host=$1
     local membase_file='/root/scripts/membase-password'
-    echo "Creating membase password"
+    echo "Creating membase password for ${host}"
     # local fs_server=${1}
     pass=$(mkpasswd -l 16 -s 0)
     if [[ "${host}" =~ .*fs-primary.* ]];then
 	echo "${host} FS Host"
-    echo "Regular hosts"
+    else
+	echo "Regular hosts"
     fi
     # echo "The password for membase is ${pass} and we are overwritting ${membase_file}"
     # local svn_up='svn up /root/scripts/java-cloud-scripts'
