@@ -11,14 +11,19 @@ test()
 	echo 'ext-'$client'-'$server'.'$client'.'$domain_name;
     done
 }
+create_pass()
+{
+    local pass=$(mkpasswd -l 16 -s 0)
+    echo "{pass}"
+}
 membase_pass()
 {
 #create membase password and store it on fs-primary server
     # fs_server='ext-'$client'-'fs-primary'.'$client'.'$domain_name
     local host=$1
+    local pass=$2
     local membase_file='/root/scripts/membase-password'
     # local fs_server=${1}
-    pass=$(mkpasswd -l 16 -s 0)
     if [[ "${host}" =~ .*fs-primary.* ]];then
 	echo "Creating membase server for ${host} with password ${pass}"
 	# echo "${host} FS Host"
@@ -69,6 +74,7 @@ test1()
 ssh_manager()
 {
     local servers=(fs-primary icat front cart ws) 
+    local pass=$(create_pass)
     for server in ${servers[@]};
     do 
 	if [ ${server} !=  'fs-primary' ]; then
@@ -76,13 +82,13 @@ ssh_manager()
 	    # echo "doing $server work"
 	    # test1 ${server} app;
 	    # test1 ${server} ${user}
-	    membase_pass ${server}
+	    membase_pass ${server} ${pass}
 	else
 	    server="ext-${client}-${server}.${client}.${domain_name}"
 	    # echo $server
 	    # test1 ${server} deployer
 	    # test1 ${server} postgres
-	    membase_pass ${server}
+	    membase_pass ${server} ${pass}
 	fi
     done
 }
