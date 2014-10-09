@@ -14,7 +14,7 @@ test()
 create_pass()
 {
     local pass=$(mkpasswd -l 16 -s 0)
-    echo "{pass}"
+    echo "${pass}"
 }
 membase_pass()
 {
