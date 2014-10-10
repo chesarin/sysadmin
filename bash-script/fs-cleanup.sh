@@ -11,6 +11,7 @@ cleanup()
     rm -rf web-maintenance/* web-redirects/*
     cd /home/postgres
     rm -rf yaz5.0_database
-    su - postgres -c cvs checkout yaz5.0_database
+    su - postgres
+    cvs checkout yaz5.0_database
 }
 cleanup
