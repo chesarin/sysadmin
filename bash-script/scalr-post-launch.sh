@@ -18,7 +18,8 @@ cleanup()
 	${ssh_command} ${ssh_param} ${user}@${host} "echo ${my_script} | base64 -d | bash"
     elif [[ "${host}" =~ .*ws.* ]]; then
 	echo "ws server ${host} cleanup"
-	${ssh_command} ${ssh_param} ${user}@${host} "rm -rf /var/www/www/htdocs/* /var/www/goahead/htdocs/*"
+	${ssh_command} ${ssh_param} ${user}@${host} "$(pwd);$(hostname)"
+	# ${ssh_command} ${ssh_param} ${user}@${host} "rm -rf /var/www/www/htdocs/* /var/www/goahead/htdocs/*"
     fi
 }
 test() 
