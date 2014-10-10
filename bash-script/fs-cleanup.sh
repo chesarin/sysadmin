@@ -12,6 +12,6 @@ cleanup()
     cd /home/postgres
     rm -rf yaz5.0_database
     su - postgres
-    cvs checkout yaz5.0_database
+    cvs checkout 'yaz5.0_database'
 }
 cleanup
