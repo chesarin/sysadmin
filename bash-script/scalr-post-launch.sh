@@ -1,9 +1,26 @@
-#/usr/bin/env bash
+#!/usr/bin/env bash
 user=$1
 client=$2
 domain_name=$3
 servers=(fs-primary icat front cart ws) 
 ssh_command='ssh -oStrictHostKeyChecking=false -oUserKnownHostsFile=/dev/null'
+ssh_param="-i ${HOME}/.ssh/identities/${client}java.pem -t"
+cleanup()
+{
+    local host=${1}
+    if [[ "${host}" =~ .*fs-primary.* ]]; then
+	echo "fs-primary ${host} cleanup"
+	local my_script=$(base64 -w0 fs-cleanup.sh)
+	${ssh_command} ${ssh_param} ${user}@${host} "echo ${my_script} | base64 -d | bash"
+    elif [[ "${host}" =~ .*icat.* || "${host}" =~ .*front.* || "${host}" =~ .*cart.* ]]; then
+	local my_script=$(base64 -w0 app-cleanup.sh)
+	echo "host applications ${host} cleanup"
+	${ssh_command} ${ssh_param} ${user}@${host} "echo ${my_script} | base64 -d | bash"
+    elif [[ "${host}" =~ .*ws.* ]]; then
+	echo "ws server ${host} cleanup"
+	${ssh_command} ${ssh_param} ${user}@${host} "rm -rf /var/www/www/htdocs/* /var/www/goahead/htdocs/*"
+    fi
+}
 test() 
 {
     for server in ${servers[@]};
@@ -74,7 +91,7 @@ test1()
 ssh_manager()
 {
     local servers=(fs-primary icat front cart ws) 
-    local pass=$(create_pass)
+    # local pass=$(create_pass)
     for server in ${servers[@]};
     do 
 	if [ ${server} !=  'fs-primary' ]; then
@@ -82,13 +99,15 @@ ssh_manager()
 	    # echo "doing $server work"
 	    # test1 ${server} app;
 	    # test1 ${server} ${user}
-	    membase_pass ${server} ${pass}
+	    # membase_pass ${server} ${pass}
+	    cleanup ${server}
 	else
 	    server="ext-${client}-${server}.${client}.${domain_name}"
 	    # echo $server
 	    # test1 ${server} deployer
 	    # test1 ${server} postgres
-	    membase_pass ${server} ${pass}
+	    # membase_pass ${server} ${pass}
+	    cleanup ${server}
 	fi
     done
 }
